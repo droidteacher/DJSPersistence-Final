@@ -1,9 +1,12 @@
 package hu.prooktatas.djspersistence
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -15,6 +18,8 @@ import com.google.gson.reflect.TypeToken
 import hu.prooktatas.djspersistence.adapter.JobItemClickHandler
 import hu.prooktatas.djspersistence.adapter.JobListAdapter
 import hu.prooktatas.djspersistence.model.JobSearchResult
+import hu.prooktatas.djspersistence.persistence.TogglingTask
+import hu.prooktatas.djspersistence.persistence.entity.Job
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.io.IOException
@@ -52,6 +57,23 @@ class MainActivity : AppCompatActivity(), JobItemClickHandler {
         button.setOnClickListener {
             fetchUsingOKHttpAsyncWithUserInput()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_item_favorites -> {
+                Intent(this, FavoritesActivity::class.java).let {
+                    startActivity(it)
+                }
+            }
+        }
+
+        return true
     }
 
     fun consumeRawResponse(response: String) {
@@ -126,6 +148,12 @@ class MainActivity : AppCompatActivity(), JobItemClickHandler {
     override fun toggleFavoriteState(item: JobSearchResult) {
         item.favorite = !item.favorite
         recyclerView.adapter?.notifyDataSetChanged()
+
+        val job = Job(item)
+        val togglingTask = TogglingTask(this) {
+            Log.d(TAG, "We have ${it.size} item(s) in jobs table");
+        }
+        togglingTask.execute(job)
     }
 }
 

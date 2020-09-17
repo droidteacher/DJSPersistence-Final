@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_favorites"
+        android:title="Favorite Jobs"
+        app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/menu_item_test_1"
+        android:title="Option 2"
+        app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/menu_item_test_2"
+        android:title="Option 3"
+        app:showAsAction="collapseActionView"/>
+</menu>

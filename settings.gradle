@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "DJSPersistence"
+rootProject.name = "DJSPersistence-Final"
